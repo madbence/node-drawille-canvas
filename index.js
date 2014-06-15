@@ -5,10 +5,9 @@ var mat2d = glMatrix.mat2d;
 var vec2 = glMatrix.vec2;
 
 function Context(width, height) {
-  this.width = width;
-  this.height = height;
-  this.canvas = new Canvas(width, height);
-  this.m = mat2d.create();
+  this._canvas = new Canvas(width, height);
+  this._matrix = mat2d.create();
+  this._stack = [];
 }
 
 var methods = ['save', 'restore', 'scale', 'rotate', 'translate', 'transform', 'setTransform', 'resetTransform', 'createLinearGradient', 'createRadialGradient', 'createPattern', 'clearRect', 'fillRect', 'strokeRect', 'beginPath', 'fill', 'stroke', 'drawFocusIfNeeded', 'clip', 'isPointInPath', 'isPointInStroke', 'fillText', 'strokeText', 'measureText', 'drawImage', 'createImageData', 'getImageData', 'putImageData', 'getContextAttributes', 'setLineDash', 'getLineDash', 'setAlpha', 'setCompositeOperation', 'setLineWidth', 'setLineCap', 'setLineJoin', 'setMiterLimit', 'clearShadow', 'setStrokeColor', 'setFillColor', 'drawImageFromRect', 'setShadow', 'closePath', 'moveTo', 'lineTo', 'quadraticCurveTo', 'bezierCurveTo', 'arcTo', 'rect', 'arc', 'ellipse'];
@@ -35,11 +34,11 @@ function quad(m, x, y, w, h, f) {
 }
 
 Context.prototype.clearRect = function(x, y, w, h) {
-  quad(this.m, x, y, w, h, this.canvas.unset.bind(this.canvas));
+  quad(this._matrix, x, y, w, h, this._canvas.unset.bind(this._canvas));
 };
 
 Context.prototype.fillRect = function(x, y, w, h) {
-  quad(this.m, x, y, w, h, this.canvas.set.bind(this.canvas));
+  quad(this._matrix, x, y, w, h, this._canvas.set.bind(this._canvas));
 };
 
 module.exports = Context;
