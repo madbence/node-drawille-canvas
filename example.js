@@ -2,7 +2,15 @@ var Canvas = require('./');
 
 var c = new Canvas(160, 160);
 
-c.fillRect(10, 10, 40, 40);
-c.clearRect(15, 15, 30, 25);
+function draw() {
+  var now = Date.now();
+  c._canvas.clear();
+  c.save();
+  c.rotate(now/1000*360);
+  c.translate(80, 80);
+  c.fillRect(-10, -10, 20, 20);
+  c.restore();
+  console.log(c._canvas.frame());
+}
 
-console.log(c.canvas.frame());
+setInterval(draw, 1000/24);
