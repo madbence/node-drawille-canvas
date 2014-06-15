@@ -41,4 +41,14 @@ Context.prototype.fillRect = function(x, y, w, h) {
   quad(this._matrix, x, y, w, h, this._canvas.set.bind(this._canvas));
 };
 
+Context.prototype.save = function save() {
+  this._stack.push(mat2d.clone(mat2d.create(), this._matrix));
+};
+
+Context.prototype.restore = function restore() {
+  var top = this._stack.pop();
+  if(!top) return;
+  this._matrix = top;
+};
+
 module.exports = Context;
