@@ -27,6 +27,26 @@ Fills the given area of the canvas.
 
 Clears the given area of the canvas.
 
+### c.save()
+
+Save the current transformation matrix on the stack.
+
+### c.restore()
+
+Restore the last transformation matrix.
+
+### c.translate(x, y)
+
+Translate the current transformation matrix.
+
+### c.rotate(a)
+
+Rotate the current transformation matrix with the given angles.
+
+### c.scale(x, y)
+
+Scale the current transformation matrix.
+
 ## License
 
 MIT
