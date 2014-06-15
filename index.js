@@ -51,4 +51,16 @@ Context.prototype.restore = function restore() {
   this._matrix = top;
 };
 
+Context.prototype.translate = function translate(x, y) {
+  mat2d.translate(this._matrix, this._matrix, vec2.fromValues(x, y));
+};
+
+Context.prototype.rotate = function rotate(a) {
+  mat2d.rotate(this._matrix, this._matrix, a/180*Math.PI);
+};
+
+Context.prototype.scale = function scale(x, y) {
+  mat2d.scale(this._matrix, this._matrix, vec2.fromValues(x, y));
+};
+
 module.exports = Context;
