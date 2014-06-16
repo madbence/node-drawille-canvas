@@ -16,10 +16,34 @@ methods.forEach(function(name) {
   Context.prototype[name] = function() {};
 });
 
-function triangle(a, b, f) {
-  for(var i = 0; i < a.length; i++) {
-    for(var j = 0; j < b.length; j++) {
-      bresenham(a[i].x, a[i].y, b[j].x, b[j].y, f);
+function br(p1, p2) {
+  return bresenham(
+    Math.floor(p1[0]),
+    Math.floor(p1[1]),
+    Math.floor(p2[0]),
+    Math.floor(p2[1])
+  );
+}
+
+function triangle(pa, pb, pc, f) {
+  var a = br(pb, pc);
+  var b = br(pa, pc);
+  var c = br(pa, pb);
+  var s = a.concat(b).concat(c).sort(function(a, b) {
+    if(a.y == b.y) {
+      return a.x - b.x;
+    }
+    return a.y-b.y;
+  });
+  for(var i = 0; i < s.length - 1; i++) {
+    var cur = s[i];
+    var nex = s[i+1];
+    if(cur.y == nex.y) {
+      for(var j = cur.x; j <= nex.x; j++) {
+        f(j, cur.y);
+      }
+    } else {
+      f(cur.x, cur.y);
     }
   }
 }
@@ -29,8 +53,8 @@ function quad(m, x, y, w, h, f) {
   var p2 = vec2.transformMat2d(vec2.create(), vec2.fromValues(x+w, y), m);
   var p3 = vec2.transformMat2d(vec2.create(), vec2.fromValues(x, y+h), m);
   var p4 = vec2.transformMat2d(vec2.create(), vec2.fromValues(x+w, y+h), m);
-  triangle(bresenham(p1[0], p1[1], p2[0], p2[1]), bresenham(p1[0], p1[1], p3[0], p3[1]), f);
-  triangle(bresenham(p4[0], p4[1], p2[0], p2[1]), bresenham(p4[0], p4[1], p3[0], p3[1]), f);
+  triangle(p1, p2, p3, f);
+  triangle(p3, p2, p4, f);
 }
 
 Context.prototype.clearRect = function(x, y, w, h) {
