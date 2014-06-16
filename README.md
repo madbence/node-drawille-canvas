@@ -47,6 +47,26 @@ Rotate the current transformation matrix with the given angles.
 
 Scale the current transformation matrix.
 
+### c.beginPath()
+
+Start a new path.
+
+### c.closePath()
+
+Close the current path.
+
+### c.moveTo(x, y)
+
+Moves the starting point of the next segment to the given coordinates.
+
+### c.lineTo(x, y)
+
+Connects the starting point with the given point with a straight line.
+
+### c.stroke()
+
+Stroke the current path.
+
 ## License
 
 MIT
