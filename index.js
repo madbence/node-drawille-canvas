@@ -8,6 +8,7 @@ function Context(width, height) {
   this._canvas = new Canvas(width, height);
   this._matrix = mat2d.create();
   this._stack = [];
+  this._currentPath = [];
 }
 
 var methods = ['save', 'restore', 'scale', 'rotate', 'translate', 'transform', 'setTransform', 'resetTransform', 'createLinearGradient', 'createRadialGradient', 'createPattern', 'clearRect', 'fillRect', 'strokeRect', 'beginPath', 'fill', 'stroke', 'drawFocusIfNeeded', 'clip', 'isPointInPath', 'isPointInStroke', 'fillText', 'strokeText', 'measureText', 'drawImage', 'createImageData', 'getImageData', 'putImageData', 'getContextAttributes', 'setLineDash', 'getLineDash', 'setAlpha', 'setCompositeOperation', 'setLineWidth', 'setLineCap', 'setLineJoin', 'setMiterLimit', 'clearShadow', 'setStrokeColor', 'setFillColor', 'drawImageFromRect', 'setShadow', 'closePath', 'moveTo', 'lineTo', 'quadraticCurveTo', 'bezierCurveTo', 'arcTo', 'rect', 'arc', 'ellipse'];
@@ -85,6 +86,44 @@ Context.prototype.rotate = function rotate(a) {
 
 Context.prototype.scale = function scale(x, y) {
   mat2d.scale(this._matrix, this._matrix, vec2.fromValues(x, y));
+};
+
+Context.prototype.beginPath = function beginPath() {
+  this._currentPath = [];
+};
+
+Context.prototype.closePath = function closePath() {
+  this._currentPath.push({
+    point: this._currentPath[0].point,
+    stroke: false
+  });
+};
+
+Context.prototype.stroke = function stroke() {
+  var set = this._canvas.set.bind(this._canvas);
+  for(var i = 0; i < this._currentPath.length - 1; i++) {
+    var cur = this._currentPath[i];
+    var nex = this._currentPath[i+1];
+    if(nex.stroke) {
+      bresenham(cur.point[0], cur.point[1], nex.point[0], nex.point[1], set);
+    }
+  }
+};
+
+function addPoint(m, p, x, y, s) {
+  var v = vec2.transformMat2d(vec2.create(), vec2.fromValues(x, y), m);
+  p.push({
+    point: [Math.floor(v[0]), Math.floor(v[1])],
+    stroke: s
+  });
+}
+
+Context.prototype.moveTo = function moveTo(x, y) {
+  addPoint(this._matrix, this._currentPath, x, y, false);
+};
+
+Context.prototype.lineTo = function lineTo(x, y) {
+  addPoint(this._matrix, this._currentPath, x, y, true);
 };
 
 module.exports = Context;
