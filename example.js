@@ -8,7 +8,7 @@ function draw() {
   c.save();
   c.rotate(now/1000*360/5);
   c.translate(80, 80);
-  //c.fillRect(-10, -10, 20, 20);
+  c.fillRect(-10, -10, 20, 20);
   c.beginPath();
   c.moveTo(0,0);
   c.lineTo(20,0);
@@ -18,6 +18,9 @@ function draw() {
   c.lineTo(0,0)
   c.stroke();
   c.restore();
+
+  c.fillRect(10, 10, 20, 20);
+  c.clearRect(15, 15, 10, 10);
   console.log(c._canvas.frame());
 }
 
