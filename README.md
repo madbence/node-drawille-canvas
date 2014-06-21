@@ -1,5 +1,7 @@
 # drawille-canvas
 
+![anim](anim.gif)
+
 HTML5 Canvas API for [`drawille`](https://github.com/madbence/node-drawille).
 
 ## Install
