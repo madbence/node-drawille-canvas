@@ -1,7 +1,7 @@
 var Canvas = require('./');
 
 var n = 20;
-var a = 50;
+var a = 40;
 var w = 80;
 var t = 2;
 var pi = Math.PI;
@@ -9,11 +9,22 @@ var pi2 = pi/2;
 var sin = Math.sin;
 var cos = Math.cos;
 
-var c = new Canvas(w*2, w*2);
+var c;
+var flush;
+if(typeof document == 'undefined') {
+  c = new Canvas(w*2, w);
+  flush = function() {
+    console.log(c._canvas.frame());
+  };
+} else {
+  c = document.getElementById('canvas').getContext('2d');
+  c.scale(2, 2);
+  flush = function() {};
+}
 
 function draw() {
   var now = Date.now()/1000;
-  c._canvas.clear();
+  c.clearRect(0, 0, w*2, w*2);
   c.save();
   c.translate(w, w);
   for(var i = 1; i < n; i++) {
@@ -33,7 +44,7 @@ function draw() {
     c.stroke();
   }
   c.restore();
-  console.log(c._canvas.frame());
+  flush();
 }
 
-setInterval(draw, 1000/24);
+setInterval(draw, 1000/30);
