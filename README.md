@@ -10,6 +10,8 @@ HTML5 Canvas API for [`drawille`](https://github.com/madbence/node-drawille).
 $ npm install drawille-canvas
 ```
 
+In node `v0.10` it's a bit slow, with node `v0.11` it runs very smoothly.
+
 ## Usage
 
 See [example](example.js), check out in the console (`node example`) or in the [browser](http://madbence.github.io/node-drawille-canvas/) (`example.html`).
