@@ -12,7 +12,7 @@ $ npm install drawille-canvas
 
 ## Usage
 
-See [example](example.js), check out in the console (`node example`) or in the browser (`example.html`).
+See [example](example.js), check out in the console (`node example`) or in the [browser](http://madbence.github.io/node-drawille-canvas/) (`example.html`).
 
 ## API
 
