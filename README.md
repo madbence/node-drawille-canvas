@@ -12,7 +12,7 @@ $ npm install drawille-canvas
 
 ## Usage
 
-See [example](example.js).
+See [example](example.js), check out in the console (`node example`) or in the browser (`example.html`).
 
 ## API
 
@@ -68,6 +68,11 @@ Connects the starting point with the given point with a straight line.
 ### c.stroke()
 
 Stroke the current path.
+
+## TODO
+
+- add `.fill` to fill paths
+- add `.arc`, `.arcTo`
 
 ## License
 
