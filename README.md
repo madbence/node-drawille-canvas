@@ -25,7 +25,7 @@ For method details, see [`CanvasRenderingContext2D` on MDN](https://developer.mo
 
 Fills the given area of the canvas.
 
-### c.crearRect(x, y, w, h)
+### c.clearRect(x, y, w, h)
 
 Clears the given area of the canvas.
 
