@@ -11,15 +11,18 @@ var cos = Math.cos;
 
 var c;
 var flush;
-if(typeof document == 'undefined') {
-  c = new Canvas(w*2, w);
+
+var canvas = new Canvas(w*2, w);
+c = canvas.getContext('2d');
+
+if (typeof document !== 'undefined') {
+  document.body.appendChild(canvas);
+  flush = function() {};
+}
+else {
   flush = function() {
     console.log(c._canvas.frame());
   };
-} else {
-  c = document.getElementById('canvas').getContext('2d');
-  c.scale(2, 2);
-  flush = function() {};
 }
 
 function draw() {

@@ -126,4 +126,8 @@ Context.prototype.lineTo = function lineTo(x, y) {
   addPoint(this._matrix, this._currentPath, x, y, true);
 };
 
+Context.prototype.getContext = function (str) {
+  return this;
+};
+
 module.exports = Context;

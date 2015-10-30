@@ -4,8 +4,10 @@
   "description": "HTML5 Canvas API for drawille",
   "main": "index.js",
   "scripts": {
-    "test": "tap test/*.js"
+    "test": "node example.js",
+    "build": "browserify ./example.js -d -o ./bundle.js"
   },
+  "browser": "./browser.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/madbence/node-drawille-canvas"
@@ -24,5 +26,8 @@
     "bresenham": "0.0.3",
     "drawille": "^0.1.0",
     "gl-matrix": "^2.1.0"
+  },
+  "devDependencies": {
+    "browserify": "^12.0.1"
   }
 }
