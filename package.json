@@ -1,6 +1,6 @@
 {
   "name": "drawille-canvas",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "HTML5 Canvas API for drawille",
   "main": "index.js",
   "scripts": {
