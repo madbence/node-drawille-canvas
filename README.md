@@ -71,11 +71,6 @@ Connects the starting point with the given point with a straight line.
 
 Stroke the current path.
 
-## TODO
-
-- add `.fill` to fill paths
-- add `.arc`, `.arcTo`
-
 ## License
 
 MIT
