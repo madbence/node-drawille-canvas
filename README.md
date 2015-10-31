@@ -71,10 +71,13 @@ Connects the starting point with the given point with a straight line.
 
 Stroke the current path.
 
-## TODO
+### c.getContext('2d')
 
-- add `.fill` to fill paths
-- add `.arc`, `.arcTo`
+Return canvas itself, for compliance with browser.
+
+### c.width, c.height
+
+Canvas dimensions.
 
 ## License
 

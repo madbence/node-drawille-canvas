@@ -1,0 +1,4 @@
+- add `.fill` to fill paths
+- add `.arc`, `.arcTo`
+- add `fillText`
+- think up more elegant way to call `.frame()`
