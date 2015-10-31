@@ -71,6 +71,10 @@ Connects the starting point with the given point with a straight line.
 
 Stroke the current path.
 
+### c.getContext('2d')
+
+Return canvas itself, for compliance with browser.
+
 ## License
 
 MIT

@@ -2,5 +2,4 @@
 - add `.arc`, `.arcTo`
 - add `fillText`
 - add `width, height` values, really changing the w/h of the canvas
-- add readme details on creation
 - think up more elegant way to call `.frame()`
