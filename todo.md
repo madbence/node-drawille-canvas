@@ -1,5 +1,4 @@
 - add `.fill` to fill paths
 - add `.arc`, `.arcTo`
 - add `fillText`
-- add `width, height` values, really changing the w/h of the canvas
 - think up more elegant way to call `.frame()`

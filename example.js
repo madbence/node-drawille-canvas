@@ -12,7 +12,7 @@ var cos = Math.cos;
 var c;
 var flush;
 
-var canvas = new Canvas(w*2, w);
+var canvas = new Canvas();
 c = canvas.getContext('2d');
 
 if (typeof document !== 'undefined') {
@@ -27,7 +27,7 @@ else {
 
 function draw() {
   var now = Date.now()/1000;
-  c.clearRect(0, 0, w*2, w*2);
+  c.clearRect(0, 0, canvas.width, canvas.height);
   c.save();
   c.translate(w, w);
   for(var i = 1; i < n; i++) {
