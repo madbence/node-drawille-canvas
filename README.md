@@ -75,6 +75,10 @@ Stroke the current path.
 
 Return canvas itself, for compliance with browser.
 
+### c.width, c.height
+
+Canvas dimensions.
+
 ## License
 
 MIT
