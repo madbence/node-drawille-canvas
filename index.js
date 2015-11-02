@@ -5,40 +5,30 @@ var mat2d = glMatrix.mat2d;
 var vec2 = glMatrix.vec2;
 
 function Context(width, height) {
-  if (width == null) {
-    width = process.stdout.columns * 2 - 2;
-  }
-  if (height == null) {
-    height = process.stdout.rows * 4;
-  }
-
   this._canvas = new Canvas(width, height);
-
-  Object.defineProperties(this, {
-    width: {
-      get: function () {
-        return this._canvas.width;
-      },
-      set: function (width) {
-        width = Math.floor(width / 2) * 2;
-        this._canvas.width = width;
-      }
-    },
-    height: {
-      get: function () {
-        return this._canvas.height;
-      },
-      set: function (height) {
-        height = Math.floor(height / 4) * 4;
-        this._canvas.height = height;
-      }
-    }
-  });
-
   this._matrix = mat2d.create();
   this._stack = [];
   this._currentPath = [];
 }
+
+Object.defineProperties(Context.prototype, {
+  width: {
+    get: function () {
+      return this._canvas.width;
+    },
+    set: function (width) {
+      this._canvas.width = width;
+    }
+  },
+  height: {
+    get: function () {
+      return this._canvas.height;
+    },
+    set: function (height) {
+      this._canvas.height = height;
+    }
+  }
+});
 
 var methods = ['save', 'restore', 'scale', 'rotate', 'translate', 'transform', 'setTransform', 'resetTransform', 'createLinearGradient', 'createRadialGradient', 'createPattern', 'clearRect', 'fillRect', 'strokeRect', 'beginPath', 'fill', 'stroke', 'drawFocusIfNeeded', 'clip', 'isPointInPath', 'isPointInStroke', 'fillText', 'strokeText', 'measureText', 'drawImage', 'createImageData', 'getImageData', 'putImageData', 'getContextAttributes', 'setLineDash', 'getLineDash', 'setAlpha', 'setCompositeOperation', 'setLineWidth', 'setLineCap', 'setLineJoin', 'setMiterLimit', 'clearShadow', 'setStrokeColor', 'setFillColor', 'drawImageFromRect', 'setShadow', 'closePath', 'moveTo', 'lineTo', 'quadraticCurveTo', 'bezierCurveTo', 'arcTo', 'rect', 'arc', 'ellipse'];
 
