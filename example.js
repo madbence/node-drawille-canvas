@@ -2,7 +2,6 @@ var Canvas = require('./');
 
 var n = 20;
 var a = 40;
-var w = 80;
 var t = 2;
 var pi = Math.PI;
 var pi2 = pi/2;
@@ -27,6 +26,7 @@ else {
 
 function draw() {
   var now = Date.now()/1000;
+  var w = canvas.width / 2;
   c.clearRect(0, 0, canvas.width, canvas.height);
   c.save();
   c.translate(w, w);
