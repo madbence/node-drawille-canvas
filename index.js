@@ -30,7 +30,7 @@ Object.defineProperties(Context.prototype, {
   }
 });
 
-var methods = ['save', 'restore', 'scale', 'rotate', 'translate', 'transform', 'setTransform', 'resetTransform', 'createLinearGradient', 'createRadialGradient', 'createPattern', 'strokeRect', 'beginPath', 'fill', 'stroke', 'drawFocusIfNeeded', 'clip', 'isPointInPath', 'isPointInStroke', 'fillText', 'strokeText', 'measureText', 'drawImage', 'createImageData', 'getImageData', 'putImageData', 'getContextAttributes', 'setLineDash', 'getLineDash', 'setAlpha', 'setCompositeOperation', 'setLineWidth', 'setLineCap', 'setLineJoin', 'setMiterLimit', 'clearShadow', 'setStrokeColor', 'setFillColor', 'drawImageFromRect', 'setShadow', 'closePath', 'moveTo', 'lineTo', 'quadraticCurveTo', 'bezierCurveTo', 'arcTo', 'rect', 'arc', 'ellipse'];
+var methods = ['save', 'restore', 'scale', 'rotate', 'translate', 'transform', 'setTransform', 'resetTransform', 'createLinearGradient', 'createRadialGradient', 'createPattern', 'beginPath', 'fill', 'stroke', 'drawFocusIfNeeded', 'clip', 'isPointInPath', 'isPointInStroke', 'fillText', 'strokeText', 'measureText', 'drawImage', 'createImageData', 'getImageData', 'putImageData', 'getContextAttributes', 'setLineDash', 'getLineDash', 'setAlpha', 'setCompositeOperation', 'setLineWidth', 'setLineCap', 'setLineJoin', 'setMiterLimit', 'clearShadow', 'setStrokeColor', 'setFillColor', 'drawImageFromRect', 'setShadow', 'closePath', 'moveTo', 'lineTo', 'quadraticCurveTo', 'bezierCurveTo', 'arcTo', 'rect', 'arc', 'ellipse'];
 
 methods.forEach(function(name) {
   Context.prototype[name] = function() {};
@@ -96,6 +96,20 @@ Context.prototype.fillRect = function(x, y, w, h) {
       this._canvas.set(i, j);
     }
   }
+};
+
+Context.prototype.strokeRect = function (x, y, w, h) {
+  var fromX = Math.round(Math.max(x, 0)),
+      fromY = Math.round(Math.max(y, 0)),
+      toX = Math.round(Math.min(x + w, this.width)),
+      toY = Math.round(Math.min(x + h, this.height));
+
+  var set = this._canvas.set.bind(this._canvas);
+
+  bresenham(fromX, fromY, toX, fromY, set);
+  bresenham(toX, fromY, toX, toY, set);
+  bresenham(toX, toY, fromX, toY, set);
+  bresenham(fromX, toY, fromX, fromY, set);
 };
 
 Context.prototype.save = function save() {

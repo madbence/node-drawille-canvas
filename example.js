@@ -47,6 +47,9 @@ function draw() {
     c.stroke();
   }
   c.restore();
+
+  c.strokeRect(0,0,canvas.width, canvas.height);
+
   flush();
 }
 
