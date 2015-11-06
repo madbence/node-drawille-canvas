@@ -30,7 +30,7 @@ Object.defineProperties(Context.prototype, {
   }
 });
 
-var methods = ['save', 'restore', 'scale', 'rotate', 'translate', 'transform', 'setTransform', 'resetTransform', 'createLinearGradient', 'createRadialGradient', 'createPattern', 'beginPath', 'fill', 'stroke', 'drawFocusIfNeeded', 'clip', 'isPointInPath', 'isPointInStroke', 'fillText', 'strokeText', 'measureText', 'drawImage', 'createImageData', 'getImageData', 'putImageData', 'getContextAttributes', 'setLineDash', 'getLineDash', 'setAlpha', 'setCompositeOperation', 'setLineWidth', 'setLineCap', 'setLineJoin', 'setMiterLimit', 'clearShadow', 'setStrokeColor', 'setFillColor', 'drawImageFromRect', 'setShadow', 'closePath', 'moveTo', 'lineTo', 'quadraticCurveTo', 'bezierCurveTo', 'arcTo', 'rect', 'arc', 'ellipse'];
+var methods = ['save', 'restore', 'scale', 'rotate', 'translate', 'transform', 'setTransform', 'resetTransform', 'createLinearGradient', 'createRadialGradient', 'createPattern', 'beginPath', 'fill', 'stroke', 'drawFocusIfNeeded', 'clip', 'isPointInPath', 'isPointInStroke', 'strokeText', 'measureText', 'drawImage', 'createImageData', 'getImageData', 'putImageData', 'getContextAttributes', 'setLineDash', 'getLineDash', 'setAlpha', 'setCompositeOperation', 'setLineWidth', 'setLineCap', 'setLineJoin', 'setMiterLimit', 'clearShadow', 'setStrokeColor', 'setFillColor', 'drawImageFromRect', 'setShadow', 'closePath', 'moveTo', 'lineTo', 'quadraticCurveTo', 'bezierCurveTo', 'arcTo', 'rect', 'arc', 'ellipse'];
 
 methods.forEach(function(name) {
   Context.prototype[name] = function() {};
@@ -69,10 +69,10 @@ function triangle(pa, pb, pc, f) {
 }
 
 Context.prototype.clearRect = function(x, y, w, h) {
-  var fromX = Math.round(Math.max(x, 0)),
-      fromY = Math.round(Math.max(y, 0)),
-      toX = Math.round(Math.min(x + w, this.width)),
-      toY = Math.round(Math.min(x + h, this.height)),
+  var fromX = clamp(x, 0, this.width),
+      fromY = clamp(y, 0, this.height),
+      toX = clamp(x + w, 0, this.width),
+      toY = clamp(y + h, 0, this.height),
       stepX = toX > fromX ? 1 : -1,
       stepY = toY > fromY ? 1 : -1;
 
@@ -84,10 +84,10 @@ Context.prototype.clearRect = function(x, y, w, h) {
 };
 
 Context.prototype.fillRect = function(x, y, w, h) {
-  var fromX = Math.round(Math.max(x, 0)),
-      fromY = Math.round(Math.max(y, 0)),
-      toX = Math.round(Math.min(x + w, this.width)),
-      toY = Math.round(Math.min(x + h, this.height)),
+  var fromX = clamp(x, 0, this.width),
+      fromY = clamp(y, 0, this.height),
+      toX = clamp(x + w, 0, this.width),
+      toY = clamp(y + h, 0, this.height),
       stepX = toX > fromX ? 1 : -1,
       stepY = toY > fromY ? 1 : -1;
 
@@ -99,10 +99,10 @@ Context.prototype.fillRect = function(x, y, w, h) {
 };
 
 Context.prototype.strokeRect = function (x, y, w, h) {
-  var fromX = Math.round(Math.max(x, 0)),
-      fromY = Math.round(Math.max(y, 0)),
-      toX = Math.round(Math.min(x + w, this.width)),
-      toY = Math.round(Math.min(x + h, this.height));
+  var fromX = clamp(x, 0, this.width),
+      fromY = clamp(y, 0, this.height),
+      toX = clamp(x + w, 0, this.width),
+      toY = clamp(y + h, 0, this.height);
 
   var set = this._canvas.set.bind(this._canvas);
 
@@ -110,6 +110,10 @@ Context.prototype.strokeRect = function (x, y, w, h) {
   bresenham(toX, fromY, toX, toY, set);
   bresenham(toX, toY, fromX, toY, set);
   bresenham(fromX, toY, fromX, fromY, set);
+};
+
+function clamp (value, min, max) {
+  return Math.round(Math.min(Math.max(value, min), max));
 };
 
 Context.prototype.save = function save() {
