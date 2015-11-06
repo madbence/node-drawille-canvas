@@ -30,7 +30,7 @@ Object.defineProperties(Context.prototype, {
   }
 });
 
-var methods = ['save', 'restore', 'scale', 'rotate', 'translate', 'transform', 'setTransform', 'resetTransform', 'createLinearGradient', 'createRadialGradient', 'createPattern', 'clearRect', 'fillRect', 'strokeRect', 'beginPath', 'fill', 'stroke', 'drawFocusIfNeeded', 'clip', 'isPointInPath', 'isPointInStroke', 'fillText', 'strokeText', 'measureText', 'drawImage', 'createImageData', 'getImageData', 'putImageData', 'getContextAttributes', 'setLineDash', 'getLineDash', 'setAlpha', 'setCompositeOperation', 'setLineWidth', 'setLineCap', 'setLineJoin', 'setMiterLimit', 'clearShadow', 'setStrokeColor', 'setFillColor', 'drawImageFromRect', 'setShadow', 'closePath', 'moveTo', 'lineTo', 'quadraticCurveTo', 'bezierCurveTo', 'arcTo', 'rect', 'arc', 'ellipse'];
+var methods = ['save', 'restore', 'scale', 'rotate', 'translate', 'transform', 'setTransform', 'resetTransform', 'createLinearGradient', 'createRadialGradient', 'createPattern', 'strokeRect', 'beginPath', 'fill', 'stroke', 'drawFocusIfNeeded', 'clip', 'isPointInPath', 'isPointInStroke', 'fillText', 'strokeText', 'measureText', 'drawImage', 'createImageData', 'getImageData', 'putImageData', 'getContextAttributes', 'setLineDash', 'getLineDash', 'setAlpha', 'setCompositeOperation', 'setLineWidth', 'setLineCap', 'setLineJoin', 'setMiterLimit', 'clearShadow', 'setStrokeColor', 'setFillColor', 'drawImageFromRect', 'setShadow', 'closePath', 'moveTo', 'lineTo', 'quadraticCurveTo', 'bezierCurveTo', 'arcTo', 'rect', 'arc', 'ellipse'];
 
 methods.forEach(function(name) {
   Context.prototype[name] = function() {};
@@ -78,11 +78,33 @@ function quad(m, x, y, w, h, f) {
 }
 
 Context.prototype.clearRect = function(x, y, w, h) {
-  quad(this._matrix, x, y, w, h, this._canvas.unset.bind(this._canvas));
+  var fromX = Math.max(x, 0),
+      fromY = Math.max(y, 0),
+      toX = Math.min(x + w, this.width),
+      toY = Math.min(x + h, this.height),
+      stepX = toX > fromX ? 1 : -1,
+      stepY = toY > fromY ? 1 : -1;
+
+  for (var i = fromX; i != toX; i+= stepX){
+    for (var j = fromY; j != toY; j+= stepY){
+      this._canvas.unset(i, j);
+    }
+  }
 };
 
 Context.prototype.fillRect = function(x, y, w, h) {
-  quad(this._matrix, x, y, w, h, this._canvas.set.bind(this._canvas));
+  var fromX = Math.max(x, 0),
+      fromY = Math.max(y, 0),
+      toX = Math.min(x + w, this.width),
+      toY = Math.min(x + h, this.height),
+      stepX = toX > fromX ? 1 : -1,
+      stepY = toY > fromY ? 1 : -1;
+
+  for (var i = fromX; i != toX; i+= stepX){
+    for (var j = fromY; j != toY; j+= stepY){
+      this._canvas.set(i, j);
+    }
+  }
 };
 
 Context.prototype.save = function save() {
