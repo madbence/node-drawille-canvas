@@ -68,20 +68,11 @@ function triangle(pa, pb, pc, f) {
   }
 }
 
-function quad(m, x, y, w, h, f) {
-  var p1 = vec2.transformMat2d(vec2.create(), vec2.fromValues(x, y), m);
-  var p2 = vec2.transformMat2d(vec2.create(), vec2.fromValues(x+w, y), m);
-  var p3 = vec2.transformMat2d(vec2.create(), vec2.fromValues(x, y+h), m);
-  var p4 = vec2.transformMat2d(vec2.create(), vec2.fromValues(x+w, y+h), m);
-  triangle(p1, p2, p3, f);
-  triangle(p3, p2, p4, f);
-}
-
 Context.prototype.clearRect = function(x, y, w, h) {
-  var fromX = Math.max(x, 0),
-      fromY = Math.max(y, 0),
-      toX = Math.min(x + w, this.width),
-      toY = Math.min(x + h, this.height),
+  var fromX = Math.round(Math.max(x, 0)),
+      fromY = Math.round(Math.max(y, 0)),
+      toX = Math.round(Math.min(x + w, this.width)),
+      toY = Math.round(Math.min(x + h, this.height)),
       stepX = toX > fromX ? 1 : -1,
       stepY = toY > fromY ? 1 : -1;
 
@@ -93,10 +84,10 @@ Context.prototype.clearRect = function(x, y, w, h) {
 };
 
 Context.prototype.fillRect = function(x, y, w, h) {
-  var fromX = Math.max(x, 0),
-      fromY = Math.max(y, 0),
-      toX = Math.min(x + w, this.width),
-      toY = Math.min(x + h, this.height),
+  var fromX = Math.round(Math.max(x, 0)),
+      fromY = Math.round(Math.max(y, 0)),
+      toX = Math.round(Math.min(x + w, this.width)),
+      toY = Math.round(Math.min(x + h, this.height)),
       stepX = toX > fromX ? 1 : -1,
       stepY = toY > fromY ? 1 : -1;
 
