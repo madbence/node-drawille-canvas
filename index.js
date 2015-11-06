@@ -112,10 +112,6 @@ Context.prototype.strokeRect = function (x, y, w, h) {
   bresenham(fromX, toY, fromX, fromY, set);
 };
 
-function clamp (value, min, max) {
-  return Math.round(Math.min(Math.max(value, min), max));
-};
-
 Context.prototype.save = function save() {
   this._stack.push(mat2d.clone(mat2d.create(), this._matrix));
 };
@@ -160,14 +156,6 @@ Context.prototype.stroke = function stroke() {
   }
 };
 
-function addPoint(m, p, x, y, s) {
-  var v = vec2.transformMat2d(vec2.create(), vec2.fromValues(x, y), m);
-  p.push({
-    point: [Math.floor(v[0]), Math.floor(v[1])],
-    stroke: s
-  });
-}
-
 Context.prototype.moveTo = function moveTo(x, y) {
   addPoint(this._matrix, this._currentPath, x, y, false);
 };
@@ -176,8 +164,31 @@ Context.prototype.lineTo = function lineTo(x, y) {
   addPoint(this._matrix, this._currentPath, x, y, true);
 };
 
+Context.prototype.fillText = function (text, x, y, maxWidth) {
+
+};
+
 Context.prototype.getContext = function (str) {
   return this;
 };
+
+Context.prototype.toString = function () {
+  var frame = this._canvas.frame();
+
+  return frame;
+};
+
+function addPoint(m, p, x, y, s) {
+  var v = vec2.transformMat2d(vec2.create(), vec2.fromValues(x, y), m);
+  p.push({
+    point: [Math.floor(v[0]), Math.floor(v[1])],
+    stroke: s
+  });
+}
+
+function clamp (value, min, max) {
+  return Math.round(Math.min(Math.max(value, min), max));
+};
+
 
 module.exports = Context;

@@ -20,7 +20,7 @@ if (typeof document !== 'undefined') {
 }
 else {
   flush = function() {
-    console.log(c._canvas.frame());
+    console.log(c.toString());
   };
 }
 
@@ -49,6 +49,7 @@ function draw() {
   c.restore();
 
   c.strokeRect(0,0,canvas.width, canvas.height);
+  c.fillText('☼', canvas.width - 20, 20, 20);
 
   flush();
 }
