@@ -1,4 +1,5 @@
 var Canvas = require('./');
+var now = require('performance-now');
 
 var n = 20;
 var a = 40;
@@ -25,8 +26,14 @@ else {
 }
 
 function draw() {
-  var now = Date.now()/1000;
   var w = canvas.width / 2;
+  var start = now() / 1000;
+
+  // var start = now();
+  // c.fillRect(0, 0, canvas.width, canvas.height);
+  // var end = now();
+  // console.log(end - start);
+
   c.clearRect(0, 0, canvas.width, canvas.height);
   c.save();
   c.translate(w, w);
@@ -34,7 +41,7 @@ function draw() {
     var r = i*(w/n);
     c.beginPath();
     c.moveTo(-r, 0);
-    var tt = now*pi/t;
+    var tt = start*pi/t;
     var p = (sin(tt-pi*(cos(pi*i/n)+1)/2)+1)*pi2;
     for(var j = 0; j < a; j++) {
       var ca = pi*j/(a-i);
