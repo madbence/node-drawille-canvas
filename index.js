@@ -45,21 +45,31 @@ function br(p1, p2) {
   );
 }
 
-function triangle(pa, pb, pc, f) {
+function triangle(pa, pb, pc, f, clip) {
   var a = br(pb, pc);
   var b = br(pa, pc);
   var c = br(pa, pb);
-  var s = a.concat(b).concat(c).sort(function(a, b) {
+
+  var s = a.concat(b).concat(c)
+  //blow away y’s outside of the clipping area
+  .filter(function(point) {
+    return point.y < clip[3] && point.y > clip[1];
+  })
+  .sort(function(a, b) {
     if(a.y == b.y) {
       return a.x - b.x;
     }
     return a.y-b.y;
-  });
+  })
+
   for(var i = 0; i < s.length - 1; i++) {
     var cur = s[i];
     var nex = s[i+1];
+    //clamp x line by the clip area
+    var left = Math.max(clip[0], cur.x);
+    var right = Math.min(clip[2], nex.x);
     if(cur.y == nex.y) {
-      for(var j = cur.x; j <= nex.x; j++) {
+      for(var j = left; j <= right; j++) {
         f(j, cur.y);
       }
     } else {
@@ -68,35 +78,24 @@ function triangle(pa, pb, pc, f) {
   }
 }
 
-Context.prototype.clearRect = function(x, y, w, h) {
-  var fromX = clamp(x, 0, this.width),
-      fromY = clamp(y, 0, this.height),
-      toX = clamp(x + w, 0, this.width),
-      toY = clamp(y + h, 0, this.height),
-      stepX = toX > fromX ? 1 : -1,
-      stepY = toY > fromY ? 1 : -1;
 
-  for (var i = fromX; i != toX; i+= stepX){
-    for (var j = fromY; j != toY; j+= stepY){
-      this._canvas.unset(i, j);
-    }
-  }
+function quad(m, x, y, w, h, f, clip) {
+  var p1 = vec2.transformMat2d(vec2.create(), vec2.fromValues(x, y), m);
+  var p2 = vec2.transformMat2d(vec2.create(), vec2.fromValues(x+w, y), m);
+  var p3 = vec2.transformMat2d(vec2.create(), vec2.fromValues(x, y+h), m);
+  var p4 = vec2.transformMat2d(vec2.create(), vec2.fromValues(x+w, y+h), m);
+  triangle(p1, p2, p3, f, clip);
+  triangle(p3, p2, p4, f, clip);
+}
+
+Context.prototype.clearRect = function(x, y, w, h) {
+  quad(this._matrix, x, y, w, h, this._canvas.unset.bind(this._canvas), [0, 0, this.width, this.height]);
 };
 
 Context.prototype.fillRect = function(x, y, w, h) {
-  var fromX = clamp(x, 0, this.width),
-      fromY = clamp(y, 0, this.height),
-      toX = clamp(x + w, 0, this.width),
-      toY = clamp(y + h, 0, this.height),
-      stepX = toX > fromX ? 1 : -1,
-      stepY = toY > fromY ? 1 : -1;
-
-  for (var i = fromX; i != toX; i+= stepX){
-    for (var j = fromY; j != toY; j+= stepY){
-      this._canvas.set(i, j);
-    }
-  }
+  quad(this._matrix, x, y, w, h, this._canvas.set.bind(this._canvas), [0, 0, this.width, this.height]);
 };
+
 
 Context.prototype.strokeRect = function (x, y, w, h) {
   var fromX = clamp(x, 0, this.width),
@@ -111,6 +110,7 @@ Context.prototype.strokeRect = function (x, y, w, h) {
   bresenham(toX, toY, fromX, toY, set);
   bresenham(fromX, toY, fromX, fromY, set);
 };
+
 
 Context.prototype.save = function save() {
   this._stack.push(mat2d.clone(mat2d.create(), this._matrix));
