@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "node example.js",
-    "build": "browserify ./example.js -d -o ./bundle.js"
+    "build": "browserify ./example.js -d -o ./bundle.js",
+    "watch": "watchify ./example.js -d -o ./bundle.js"
   },
   "browser": "./browser.js",
   "repository": {
@@ -28,6 +29,8 @@
     "gl-matrix": "^2.1.0"
   },
   "devDependencies": {
-    "browserify": "^12.0.1"
+    "browserify": "^12.0.1",
+    "performance-now": "^0.2.0",
+    "watchify": "^3.6.0"
   }
 }
