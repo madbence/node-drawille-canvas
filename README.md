@@ -20,16 +20,16 @@ See [example](example.js), check out in the console (`node example`) or in the [
 
 ### new Canvas(width, height)
 
-Creates a new `Canvas` with the given dimensions.
+Create a new `Canvas` with the given dimensions.
 For method details, see [`CanvasRenderingContext2D` on MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D)
 
 ### c.fillRect(x, y, w, h)
 
-Fills the given area of the canvas.
+Fill the given area of the canvas.
 
 ### c.clearRect(x, y, w, h)
 
-Clears the given area of the canvas.
+Clear the given area of the canvas.
 
 ### c.save()
 
@@ -61,11 +61,11 @@ Close the current path.
 
 ### c.moveTo(x, y)
 
-Moves the starting point of the next segment to the given coordinates.
+Move the starting point of the next segment to the given coordinates.
 
 ### c.lineTo(x, y)
 
-Connects the starting point with the given point with a straight line.
+Connect the starting point with the given point with a straight line.
 
 ### c.stroke()
 
@@ -78,6 +78,19 @@ Return canvas itself, for compliance with browser.
 ### c.width, c.height
 
 Canvas dimensions.
+
+### c.toString()
+
+Return the current content of canvas as a string with braille characters.
+
+### c.getImageData(sx, sy, sw, sh)
+
+Return an ImageData object `{ width, height, data }`, representing the underlying canvas data for the area of the canvas denoted by the rectangle which starts at `sx`, `sy` and has an `sw` width and `sh` height.
+
+### c.putImageData(imagedata, dx, dy)
+### c.putImageData(imagedata, dx, dy, dirtyX, dirtyY, dirtyWidth, dirtyHeight)
+
+Paint data from the given _imagedata_ object `{ width, height, data }` onto the canvas. If a dirty rectangle is provided, only the area from that rectangle is painted.
 
 ## License
 
