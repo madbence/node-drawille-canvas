@@ -85,7 +85,7 @@ Return the current content of canvas as a string with braille characters.
 
 ### c.getImageData(sx, sy, sw, sh)
 
-Return an ImageData object `{ width, height, data }`, representing the underlying canvas data for the area of the canvas denoted by the rectangle which starts at `sx`, `sy` and has an `sw` width and `sh` height.
+Return an ImageData object `{ width, height, data }`, representing the underlying canvas data for the area of the canvas denoted by the rectangle which starts at `sx`, `sy` and has an `sw` width and `sh` height. `data` property is a string with braille characters.
 
 ### c.putImageData(imagedata, dx, dy [, dirtyX, dirtyY, dirtyWidth, dirtyHeight])
 
