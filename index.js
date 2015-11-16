@@ -229,7 +229,6 @@ Context.prototype.putImageData = function (imageData, dx, dy, dirtyX, dirtyY, di
   var limitRight = dirtyX + dirtyWidth;
   for (var y = dirtyY; y < limitBottom; y++) {
     for (var x = dirtyX; x < limitRight; x++) {
-      var pos = y * width + x;
       if (data[y][x] !== ' ') {
         this.fillRect(x + dx, y + dy, 1, 1);
       }
