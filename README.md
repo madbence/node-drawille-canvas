@@ -87,8 +87,7 @@ Return the current content of canvas as a string with braille characters.
 
 Return an ImageData object `{ width, height, data }`, representing the underlying canvas data for the area of the canvas denoted by the rectangle which starts at `sx`, `sy` and has an `sw` width and `sh` height.
 
-### c.putImageData(imagedata, dx, dy)
-### c.putImageData(imagedata, dx, dy, dirtyX, dirtyY, dirtyWidth, dirtyHeight)
+### c.putImageData(imagedata, dx, dy [, dirtyX, dirtyY, dirtyWidth, dirtyHeight])
 
 Paint data from the given _imagedata_ object `{ width, height, data }` onto the canvas. If a dirty rectangle is provided, only the area from that rectangle is painted.
 
