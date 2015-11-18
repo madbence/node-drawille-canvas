@@ -30,7 +30,7 @@ Object.defineProperties(Context.prototype, {
   }
 });
 
-var methods = ['save', 'restore', 'scale', 'rotate', 'translate', 'transform', 'setTransform', 'resetTransform', 'createLinearGradient', 'createRadialGradient', 'createPattern', 'beginPath', 'fill', 'stroke', 'drawFocusIfNeeded', 'clip', 'isPointInPath', 'isPointInStroke', 'strokeText', 'measureText', 'drawImage', 'createImageData', 'getImageData', 'putImageData', 'getContextAttributes', 'setLineDash', 'getLineDash', 'setAlpha', 'setCompositeOperation', 'setLineWidth', 'setLineCap', 'setLineJoin', 'setMiterLimit', 'clearShadow', 'setStrokeColor', 'setFillColor', 'drawImageFromRect', 'setShadow', 'closePath', 'moveTo', 'lineTo', 'quadraticCurveTo', 'bezierCurveTo', 'arcTo', 'rect', 'arc', 'ellipse'];
+var methods = ['save', 'restore', 'scale', 'rotate', 'translate', 'transform', 'setTransform', 'resetTransform', 'createLinearGradient', 'createRadialGradient', 'createPattern', 'beginPath', 'fill', 'stroke', 'drawFocusIfNeeded', 'clip', 'isPointInPath', 'isPointInStroke', 'strokeText', 'measureText', 'drawImage', 'createImageData', 'getContextAttributes', 'setLineDash', 'getLineDash', 'setAlpha', 'setCompositeOperation', 'setLineWidth', 'setLineCap', 'setLineJoin', 'setMiterLimit', 'clearShadow', 'setStrokeColor', 'setFillColor', 'drawImageFromRect', 'setShadow', 'closePath', 'moveTo', 'lineTo', 'quadraticCurveTo', 'bezierCurveTo', 'arcTo', 'rect', 'arc', 'ellipse'];
 
 methods.forEach(function(name) {
   Context.prototype[name] = function() {};
@@ -176,6 +176,64 @@ Context.prototype.toString = function () {
   var frame = this._canvas.frame();
 
   return frame;
+};
+
+Context.prototype.getImageData = function (sx, sy, sw, sh) {
+  if (sx == null) sx = 0;
+  if (sy == null) sy = 0;
+  if (sw == null) sw = this.width;
+  if (sh == null) sh = this.height;
+
+  var result = {
+    data: [],
+    width: sw,
+    height:sh
+  };
+
+  sx = Math.floor(sx/2);
+  sw = Math.floor(sw/2);
+  sy = Math.floor(sy/4);
+  sh = Math.floor(sh/4);
+
+  var delimiter = '\n';
+
+  var data = this.toString().split(delimiter);
+
+  for (var i = 0; i < sh; i++) {
+    result.data.push(data[sy + i].slice(sx, sx + sw));
+  }
+
+  result.data = result.data.join(delimiter)
+
+  return result;
+};
+
+Context.prototype.putImageData = function (imageData, dx, dy, dirtyX, dirtyY, dirtyWidth, dirtyHeight) {
+  var delimiter = '\n';
+  var data = imageData.data.split(delimiter);
+  var height = imageData.height;
+  var width = imageData.width;
+  dirtyX = dirtyX || 0;
+  dirtyY = dirtyY || 0;
+  dirtyWidth = dirtyWidth !== undefined? dirtyWidth: width;
+  dirtyHeight = dirtyHeight !== undefined? dirtyHeight: height;
+
+  dirtyX = Math.floor(dirtyX/2);
+  dirtyY = Math.floor(dirtyY/4);
+  width = Math.floor(width/2);
+  height = Math.floor(height/4);
+  dirtyWidth = Math.floor(dirtyWidth/2);
+  dirtyHeight = Math.floor(dirtyHeight/4);
+
+  var limitBottom = dirtyY + dirtyHeight;
+  var limitRight = dirtyX + dirtyWidth;
+  for (var y = dirtyY; y < limitBottom; y++) {
+    for (var x = dirtyX; x < limitRight; x++) {
+      if (data[y][x] !== ' ') {
+        this.fillRect(x + dx, y + dy, 1, 1);
+      }
+    }
+  }
 };
 
 function addPoint(m, p, x, y, s) {

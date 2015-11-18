@@ -25,9 +25,23 @@ else {
   };
 }
 
+var sunX = canvas.width - 20;
+c.font = '17px sans-serif';
+c.fillText('☼', sunX, 20, 20);
+var sunData = c.getImageData(sunX, 1, 15, 20);
+
+// Test image data
+// c.fillRect(0,0,400,400);
+// var data = c.getImageData(10, 10, 20, 20);
+// canvas.clearRect(0,0,canvas.width,canvas.height);
+// canvas.putImageData(data, 0, 10);
+// console.log(canvas.toString());
+
 function draw() {
   var w = canvas.width / 2;
   var start = now();
+
+  // Test performance
   // c.fillRect(-100, -100, 5000, 5000);
   // var end = now();
   // console.log(end - start);
@@ -53,8 +67,11 @@ function draw() {
   }
   c.restore();
 
-  c.strokeRect(0,0,canvas.width, canvas.height);
-  c.fillText('☼', canvas.width - 20, 20, 20);
+  c.strokeRect(0,0, canvas.width, canvas.height);
+
+  //shift sun
+  sunX = (sunX+1) % canvas.width;
+  c.putImageData(sunData, sunX, 1);
 
   flush();
 }
