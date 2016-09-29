@@ -1,6 +1,7 @@
 var Canvas = require('drawille');
 var bresenham = require('bresenham');
 var glMatrix = require('gl-matrix');
+var earcut = require('earcut');
 var mat2d = glMatrix.mat2d;
 var vec2 = glMatrix.vec2;
 
@@ -96,6 +97,22 @@ Context.prototype.fillRect = function(x, y, w, h) {
   quad(this._matrix, x, y, w, h, this._canvas.set.bind(this._canvas), [0, 0, this.width, this.height]);
 };
 
+Context.prototype.fill = function() {
+  if (this._currentPath[this._currentPath.length-1].point !== this._currentPath[0].point) this.closePath();
+  var vertices = [];
+  this._currentPath.forEach(function (pt) { 
+    vertices.push(pt.point[0], pt.point[1]);
+  });
+  var triangleIndices = earcut(vertices);
+  var p1, p2, p3;
+  for (var i = 0; i < triangleIndices.length; i = i + 3) {
+    p1 = vertices[triangleIndices[i]];
+    p2 = vertices[triangleIndices[i + 1]];
+    p3 = vertices[triangleIndices[i + 2]];
+  console.log(p1, p2, p3, 'points')
+    triangle(p1, p2, p3, this._canvas.set.bind(this._canvas), [0, 0, this.width, this.height]);
+  }
+};
 
 Context.prototype.strokeRect = function (x, y, w, h) {
   var fromX = clamp(x, 0, this.width),
