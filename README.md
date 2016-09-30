@@ -67,6 +67,10 @@ Move the starting point of the next segment to the given coordinates.
 
 Connect the starting point with the given point with a straight line.
 
+### c.arc(x, y, radius, start_angle, end_angle, anticlockwise)
+
+Draw an arc between two angles at centre x, y.
+
 ### c.stroke()
 
 Stroke the current path.
