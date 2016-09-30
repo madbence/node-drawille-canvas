@@ -106,10 +106,9 @@ Context.prototype.fill = function() {
   var triangleIndices = earcut(vertices);
   var p1, p2, p3;
   for (var i = 0; i < triangleIndices.length; i = i + 3) {
-    p1 = vertices[triangleIndices[i]];
-    p2 = vertices[triangleIndices[i + 1]];
-    p3 = vertices[triangleIndices[i + 2]];
-  console.log(p1, p2, p3, 'points')
+    p1 = [vertices[triangleIndices[i] * 2], vertices[triangleIndices[i] * 2 + 1]];
+    p2 = [vertices[triangleIndices[i + 1] * 2], vertices[triangleIndices[i + 1] * 2 + 1]];
+    p3 = [vertices[triangleIndices[i + 2] * 2], vertices[triangleIndices[i + 2] * 2 + 1]];
     triangle(p1, p2, p3, this._canvas.set.bind(this._canvas), [0, 0, this.width, this.height]);
   }
 };
