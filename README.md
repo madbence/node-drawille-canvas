@@ -75,6 +75,10 @@ Draw an arc between two angles at centre x, y.
 
 Stroke the current path.
 
+### c.fill()
+
+Fill the current path.
+
 ### c.getContext('2d')
 
 Return canvas itself, for compliance with browser.
