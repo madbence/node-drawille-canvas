@@ -1,6 +1,7 @@
 var Canvas = require('drawille');
 var bresenham = require('bresenham');
 var glMatrix = require('gl-matrix');
+var earcut = require('earcut');
 var mat2d = glMatrix.mat2d;
 var vec2 = glMatrix.vec2;
 
@@ -96,6 +97,21 @@ Context.prototype.fillRect = function(x, y, w, h) {
   quad(this._matrix, x, y, w, h, this._canvas.set.bind(this._canvas), [0, 0, this.width, this.height]);
 };
 
+Context.prototype.fill = function() {
+  if (this._currentPath[this._currentPath.length-1].point !== this._currentPath[0].point) this.closePath();
+  var vertices = [];
+  this._currentPath.forEach(function (pt) { 
+    vertices.push(pt.point[0], pt.point[1]);
+  });
+  var triangleIndices = earcut(vertices);
+  var p1, p2, p3;
+  for (var i = 0; i < triangleIndices.length; i = i + 3) {
+    p1 = [vertices[triangleIndices[i] * 2], vertices[triangleIndices[i] * 2 + 1]];
+    p2 = [vertices[triangleIndices[i + 1] * 2], vertices[triangleIndices[i + 1] * 2 + 1]];
+    p3 = [vertices[triangleIndices[i + 2] * 2], vertices[triangleIndices[i + 2] * 2 + 1]];
+    triangle(p1, p2, p3, this._canvas.set.bind(this._canvas), [0, 0, this.width, this.height]);
+  }
+};
 
 Context.prototype.strokeRect = function (x, y, w, h) {
   var fromX = clamp(x, 0, this.width),
@@ -162,6 +178,23 @@ Context.prototype.moveTo = function moveTo(x, y) {
 
 Context.prototype.lineTo = function lineTo(x, y) {
   addPoint(this._matrix, this._currentPath, x, y, true);
+};
+
+Context.prototype.arc = function arc(h, k, r, th1, th2, anticlockwise) {
+  var x, y;
+  var dth = Math.abs(Math.acos(1 / r) - Math.acos(2 / r))
+  if (anticlockwise) {
+    var tempth = th2;
+    th2 = th1 + 2 * Math.PI;  
+    th1 = tempth;
+  }
+  th1 = th1 % (2 * Math.PI)
+  if (th2<th1) th2 = th2 + 2 * Math.PI;
+  for (var th = th1; th <= th2; th = th + dth) {
+    y = clamp(r * Math.sin(th) + k, 0, this.height)
+    x = clamp(r * Math.cos(th) + h, 0, this.width)
+    addPoint(this._matrix, this._currentPath, x, y, true);
+  }
 };
 
 Context.prototype.fillText = function (text, x, y, maxWidth) {
